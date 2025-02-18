@@ -277,6 +277,7 @@ services:
 let's say you want `docker-compose up` on above compose file, and you want to use `docker attach runTestContainerID` and think you can use `STDIN` of the running "npm run test" process and type commands but you can't. The reason is `docker attach` only attach to the "primary process" which is "npm", process "npm" forks a new process to process the arguments "run test" so there are actually two processes in the background.
 
 
+
 ## Docker Networks
 
 ```sh
@@ -334,8 +335,25 @@ docker start productapp1
 docker run -d --name loadbalancer --network frontend -v "$(pwd)/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg" -p 3000:80 haproxy:1.7.0
 ```
 
-Compose always creates a network. It never uses the "default bridge network". If you don't manually declare networks:, Compose creates a network named default for you, but in the language of the documentation, this is a "user-defined bridge network". That is, Compose's default behavior is more or less to do
+Compose always creates a network. It never uses the "default bridge network". If you don't manually declare networks:, Compose creates a network named "default" for you, but in the language of the documentation, this is a "user-defined bridge network". That is, Compose's default behavior is more or less to do
 ```sh
 docker network create default
 docker run --net=default ...
 ```
+
+
+
+## Demystifying Kubernetes
+
+`minikube`: use to create and manage the VM (also called a `node` which is K8s cluster)
+`kubectl` : use for managing containers in the node
+
+Object Types:
+* StatefulSet
+* ReplicaController
+* Pod
+* Service : Sets up networkin gin a K8s cluster
+  * ClusterIP
+  * NodePort  <----------------expose a container to the outside world
+  * LoadBalancer
+  * Ingress
